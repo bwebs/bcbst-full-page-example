@@ -29,8 +29,13 @@ const Message = ({ id, user_id }: IMessage) => {
     const [message, setMessage] = useState<IInboxMessagePreview>();
     const [next, setNext] = useState<IInboxMessagePreview>();
     const [previous, setPrevious] = useState<IInboxMessagePreview>();
+    const [inboxApi, setInboxApi] = useState(
+        Inbox({
+            clientKey: process.env['NEXT_PUBLIC_COURIER_CLIENT_KEY'],
+            userId: user_id,
+        })
+    );
 
-    const inboxRef = useRef(useInbox());
     const navigate = useRouter();
 
     const runInboxMessage = useCallback(async () => {
@@ -38,15 +43,16 @@ const Message = ({ id, user_id }: IMessage) => {
             clientKey: process.env['NEXT_PUBLIC_COURIER_CLIENT_KEY'],
             userId: user_id,
         });
+        setInboxApi(inboxApi);
         const r = await inboxApi.getMessages({ limit: 1000 });
         const message_index = findIndex(r?.messages, { messageId: id });
         setMessage(get(r?.messages, [message_index]));
         setNext(get(r?.messages, [message_index - 1]));
         setPrevious(get(r?.messages, [message_index + 1]));
-        inboxRef.current.markMessageOpened(
+        inboxApi.markOpened(
             get(r?.messages, [message_index, 'messageId']) || ''
         );
-    }, [id, user_id, inboxRef.current]);
+    }, [id, user_id]);
 
     useEffect(() => {
         runInboxMessage();
@@ -108,9 +114,7 @@ const Message = ({ id, user_id }: IMessage) => {
                         onClick={async (e) => {
                             e.preventDefault();
                             e.stopPropagation();
-                            inboxRef.current.markMessageArchived(
-                                message.messageId
-                            );
+                            inboxApi.markArchive(message.messageId);
 
                             if (next?.messageId || previous?.messageId) {
                                 navigate.replace(
@@ -136,15 +140,11 @@ const Message = ({ id, user_id }: IMessage) => {
                                 <MailIcon fontSize="small" />
                             )
                         }
-                        onClick={async () => {
+                        onClick={() => {
                             if (is_read) {
-                                inboxRef.current.markMessageUnread(
-                                    message.messageId
-                                );
+                                inboxApi.markUnread(message.messageId);
                             } else {
-                                inboxRef.current.markMessageRead(
-                                    message.messageId
-                                );
+                                inboxApi.markRead(message.messageId);
                             }
                             setMessage((p) => {
                                 if (p) {
