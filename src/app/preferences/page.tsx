@@ -1,3 +1,4 @@
+'use client';
 import CourierPreferences from '@/components/Courier/Preferences';
 import Box from '@mui/material/Box';
 

@@ -61,7 +61,7 @@ const Message = ({ id, user_id }: IMessage) => {
         navigate;
         const is_read = get(message, ['read']);
         return (
-            <Paper component={Stack} p={4} width={'400px'} gap={2}>
+            <Paper component={Stack} p={4} width={'600px'} gap={2}>
                 <Typography textAlign={'center'} variant="h4">
                     {message.title}
                 </Typography>
