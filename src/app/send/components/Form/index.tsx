@@ -1,6 +1,8 @@
 'use client';
 import RemoveIcon from '@mui/icons-material/Remove';
 import Button from '@mui/material/Button';
+import Checkbox from '@mui/material/Checkbox';
+import FormControlLabel from '@mui/material/FormControlLabel';
 import IconButton from '@mui/material/IconButton';
 import Stack from '@mui/material/Stack';
 import TextField from '@mui/material/TextField';
@@ -33,12 +35,10 @@ const SendForm = ({}: ISendForm) => {
             return p;
         }, {});
 
-        console.log(formData);
         const r = await fetch('/api/courier/send-inbox-test', {
             method: 'POST',
             body: JSON.stringify(formData),
         }).then((r) => r.json());
-        console.log(r);
     };
 
     return (
@@ -65,6 +65,10 @@ const SendForm = ({}: ISendForm) => {
                     name="full_page"
                     multiline
                     minRows={2}
+                />
+                <FormControlLabel
+                    control={<Checkbox name="urgent" />}
+                    label="Urgent"
                 />
                 {actions > 0 && (
                     <Stack direction="row" gap={1} alignItems={'flex-end'}>
