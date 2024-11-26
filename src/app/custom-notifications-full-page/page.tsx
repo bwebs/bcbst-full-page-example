@@ -248,26 +248,43 @@ const NotificationsPage = () => {
                                                             }
                                                         />
                                                     </Stack>
-                                                    {(actions ?? []).map(
-                                                        (a) => (
-                                                            <Button
-                                                                key={a.href}
-                                                                href={a.href}
-                                                                variant="text"
-                                                                color="primary"
-                                                                onClick={(
-                                                                    e
-                                                                ) => {
-                                                                    e.stopPropagation();
-                                                                    inbox.markMessageRead(
-                                                                        notification.messageId
-                                                                    );
-                                                                }}
-                                                            >
-                                                                {a.content}
-                                                            </Button>
-                                                        )
-                                                    )}
+                                                    <Stack
+                                                        direction="row"
+                                                        gap={1}
+                                                    >
+                                                        {(actions ?? []).map(
+                                                            (a, i) => (
+                                                                <Button
+                                                                    key={a.href}
+                                                                    href={
+                                                                        a.href
+                                                                    }
+                                                                    variant="text"
+                                                                    sx={{
+                                                                        textTransform:
+                                                                            'inherit',
+                                                                    }}
+                                                                    color={
+                                                                        i %
+                                                                            2 ===
+                                                                        0
+                                                                            ? 'primary'
+                                                                            : 'secondary'
+                                                                    }
+                                                                    onClick={(
+                                                                        e
+                                                                    ) => {
+                                                                        e.stopPropagation();
+                                                                        inbox.markMessageRead(
+                                                                            notification.messageId
+                                                                        );
+                                                                    }}
+                                                                >
+                                                                    {a.content}
+                                                                </Button>
+                                                            )
+                                                        )}
+                                                    </Stack>
                                                 </Stack>
                                             </Component>
                                         </StyledPaper>

@@ -108,7 +108,7 @@ export default function Home() {
     const inbox = useInbox();
     useEffect(() => {
         inbox.fetchMessages({ params: { limit: 3, status: 'unread' } });
-    }, [inbox]);
+    }, []);
 
     return (
         <Stack component="main" px={4} py={6}>
@@ -307,6 +307,7 @@ export default function Home() {
                                 p: 3,
                                 borderRadius: 2,
                                 boxShadow: 1,
+                                position: 'relative',
                             }}
                             spacing={2}
                         >
@@ -325,7 +326,9 @@ export default function Home() {
                                             );
                                         }}
                                         sx={{
+                                            '& > div': { width: '100%' },
                                             alignSelf: 'flex-start',
+                                            width: '100%',
                                         }}
                                     >
                                         <Stack>

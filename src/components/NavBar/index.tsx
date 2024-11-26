@@ -12,7 +12,7 @@ import UserMenu from './UserMenu';
 
 export const pages = [
     { label: 'Preferences', href: '/preferences' },
-    // { label: 'Inbox Drawer (Custom)', href: '/inbox-drawer' },
+    { label: 'Inbox Page (Custom)', href: '/custom-notifications-full-page' },
     // { label: 'Custom Preferences', href: '/preferences-custom' },
 ];
 
