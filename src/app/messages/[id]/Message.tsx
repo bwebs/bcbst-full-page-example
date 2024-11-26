@@ -65,8 +65,15 @@ const Message = ({ id, user_id }: IMessage) => {
         );
         navigate;
         const is_read = get(message, ['read']);
+        const markdown = get(
+            message,
+            ['data', 'full_page'],
+            get(message, ['data', 'markdown'])
+        );
+        const pdf = get(message, ['data', 'pdf']);
+        const html = get(message, ['data', 'html']);
         return (
-            <Paper component={Stack} p={4} width={'600px'} gap={2}>
+            <Paper component={Stack} p={4} width={'600px'} gap={2} flexGrow={1}>
                 <Typography textAlign={'center'} variant="h4">
                     {message.title}
                 </Typography>
@@ -74,9 +81,27 @@ const Message = ({ id, user_id }: IMessage) => {
                     {message.preview}
                 </Typography>
                 <Divider />
-                <Box sx={{ '& img': { width: '100%' } }}>
-                    <Markdown>{get(message, ['data', 'full_page'])}</Markdown>
-                </Box>
+                <Stack sx={{ '& img': { width: '100%' } }} flexGrow={1}>
+                    {markdown ? <Markdown>{markdown}</Markdown> : null}
+                    {pdf ? (
+                        <iframe
+                            height="100%"
+                            width="100%"
+                            frameBorder={'0'}
+                            src={pdf}
+                        />
+                    ) : null}
+                    {html ? (
+                        <iframe
+                            height="100%"
+                            width="100%"
+                            frameBorder={'0'}
+                            src={URL.createObjectURL(
+                                new Blob([html], { type: 'text/html' })
+                            )}
+                        />
+                    ) : null}
+                </Stack>
 
                 {actions?.length ? (
                     <Stack
