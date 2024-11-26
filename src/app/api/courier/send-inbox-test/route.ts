@@ -25,7 +25,7 @@ export async function POST(
         return Response.json({ error: 'user_id not found' }, { status: 400 });
     } else {
         const all_actions: Courier.ElementalNode.Action[] = [
-            ...(data?.full_page
+            ...(data?.full_page || data?.html || data?.pdf || data?.markdown
                 ? [
                       {
                           type: 'action',

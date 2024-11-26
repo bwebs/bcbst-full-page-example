@@ -7,11 +7,15 @@ import IconButton from '@mui/material/IconButton';
 import Stack from '@mui/material/Stack';
 import TextField from '@mui/material/TextField';
 import { useRef, useState } from 'react';
+import InputFileUpload from './UplaodButton';
 
-interface ISendForm {}
+interface ISendForm {
+    type: 'pdf' | 'html' | 'markdown';
+}
 
-const SendForm = ({}: ISendForm) => {
+const SendForm = ({ type }: ISendForm) => {
     const [actions, setActions] = useState(0);
+    const [files, setFiles] = useState<any>();
     const ref = useRef<HTMLFormElement>(null);
     const handleClick = async (e: React.SyntheticEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -34,13 +38,16 @@ const SendForm = ({}: ISendForm) => {
             }
             return p;
         }, {});
+        if (files?.length) {
+            formData['pdf'] = files;
+        }
 
         const r = await fetch('/api/courier/send-inbox-test', {
             method: 'POST',
             body: JSON.stringify(formData),
         }).then((r) => r.json());
     };
-
+    console.log(files);
     return (
         <Stack direction="row" flexGrow={1}>
             <Stack
@@ -59,13 +66,23 @@ const SendForm = ({}: ISendForm) => {
                     multiline
                     minRows={2}
                 />
-                <TextField
-                    variant="standard"
-                    label="Full Page"
-                    name="full_page"
-                    multiline
-                    minRows={2}
-                />
+
+                {type !== 'pdf' ? (
+                    <TextField
+                        variant="standard"
+                        label="Full Page"
+                        name={type}
+                        multiline
+                        minRows={2}
+                        maxRows={15}
+                    />
+                ) : (
+                    <InputFileUpload
+                        updateFiles={(f) => {
+                            setFiles(f);
+                        }}
+                    />
+                )}
                 <FormControlLabel
                     control={<Checkbox name="urgent" />}
                     label="Urgent"

@@ -11,7 +11,7 @@ const FullPageMessages = async ({ params }: IFullPageMessages) => {
     const cookieStore = cookies();
     const user_id = cookieStore.get('user_id')?.value;
     return (
-        <Stack alignItems={'center'} flexGrow={1} p={2}>
+        <Stack alignItems={'center'} flexGrow={1} p={2} height="75vh">
             <Message id={id} user_id={user_id || ''} />
         </Stack>
     );
