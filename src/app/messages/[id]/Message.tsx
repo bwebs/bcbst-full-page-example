@@ -13,7 +13,6 @@ import {
 } from '@mui/material';
 import { Inbox } from '@trycourier/client-graphql';
 import { IInboxMessagePreview } from '@trycourier/core';
-import { useInbox } from '@trycourier/react-hooks';
 import { cloneDeep, findIndex, get, set } from 'lodash';
 import NavigationLink from 'next/link';
 import { useRouter } from 'next/navigation';
